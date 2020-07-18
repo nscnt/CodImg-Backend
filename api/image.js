@@ -156,9 +156,8 @@ module.exports = async (request, response) => {
             isMobile: false 
         });
         // await page.waitForFunction('window.LOAD_COMPLETE === true');
-        await page.waitForNavigation({
-              waitUntil: 'networkidle0',
-        });
+        await page.waitForSelector('#container')
+        await page.waitForSelector('#window')
         await page.evaluate(() => {
             let background = '';
             const codeContainer = document.getElementById('code-container');
