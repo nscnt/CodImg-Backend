@@ -3,15 +3,7 @@ export default (request, response) => {
 	console.log("🎉 ", request.url);
 	response.setHeader("Access-Control-Allow-Origin", "*");
 	response.send([
-		"c",
-		"css",
-		"cpp",
-		"go",
-		"html",
-		"java",
-		"javascript",
-		"python",
-		"rust",
-		"typescript",
-	]);
+    'Inconsolata.ttf',
+    'NotoColorEmoji.ttf',
+  ]);
 };

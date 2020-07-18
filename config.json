@@ -1,8 +1,5 @@
-export default (request, response) => {
-	console.log("");
-	console.log("🎉 ", request.url);
-	response.setHeader("Access-Control-Allow-Origin", "*");
-	response.send([
+{
+	"themes": [
 		"a11y-dark",
 		"atom-dark",
 		"base16-ateliersulphurpool.light",
@@ -27,6 +24,27 @@ export default (request, response) => {
 		"synthwave84",
 		"vs",
 		"vsc-dark-plus",
-		"xonokai",
-	]);
-};
+		"xonokai"
+	],
+	"languages": [
+		"c",
+		"css",
+		"cpp",
+		"go",
+		"html",
+		"java",
+		"javascript",
+		"python",
+		"rust",
+		"typescript"
+	],
+	"fonts": ["Inconsolata.ttf", "NotoColorEmoji.ttf"],
+	"defaults": {
+		"viewport": {
+			"width": 1000,
+			"height": 1000,
+			"deviceScaleFactor": 2
+		},
+		"index_page": "code.html"
+	}
+}
