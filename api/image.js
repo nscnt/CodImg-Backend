@@ -155,7 +155,10 @@ module.exports = async (request, response) => {
             height: DEFAULTS.VIEWPORT.HEIGHT, 
             isMobile: false 
         });
-        await page.waitForFunction('window.LOAD_COMPLETE === true');
+        // await page.waitForFunction('window.LOAD_COMPLETE === true');
+        await page.waitForNavigation({
+              waitUntil: 'networkidle0',
+        });
         await page.evaluate(() => {
             let background = '';
             const codeContainer = document.getElementById('code-container');
