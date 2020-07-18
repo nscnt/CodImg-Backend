@@ -53,8 +53,8 @@ const chromium = require('chrome-aws-lambda'),
 				availableThemes: themes,
 			});
 			return;
-		}
-
+    }
+    
 		if (backgroundPadding) {
 			try {
 				let padding = parseInt(backgroundPadding);
@@ -130,7 +130,7 @@ const chromium = require('chrome-aws-lambda'),
 			height: defaults.viewport.height,
 			isMobile: false,
 		});
-		await page.waitForFunction('window.LOAD_COMPLETE === true');
+    await page.waitForSelector('#container')
 		await page.evaluate(() => {
 			let background = '';
 			const codeContainer = document.getElementById('code-container');
