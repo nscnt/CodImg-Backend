@@ -3,7 +3,9 @@ Generate Beautiful images of your code!
 
 ## Example:
 ![](https://codimg.xyz/api/image?hideButtons=false&lineNumbers=true&language=javascript&theme=hopscotch&show-background=true&gistId=f1cd4a02f0171118171fbaae7f3a2202)
+
 `![](https://codimg.xyz/api/image?hideButtons=false&lineNumbers=true&language=javascript&theme=hopscotch&show-background=true&gistId=f1cd4a02f0171118171fbaae7f3a2202)` - the query for above image
+
 ## API Documentation
 
 The API supports the following 4 operations
