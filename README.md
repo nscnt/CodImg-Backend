@@ -5,7 +5,7 @@ Generate Beautiful images of your code!
 
 The API supports the following 4 operations
 
-* [Get Image](#get-images)
+* [Get Image](#get-image)
 * [List Themes](#list-themes)
 * [List Languages](#list-languages)
 * [List Fonts](#list-fonts)
