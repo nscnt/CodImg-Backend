@@ -20,14 +20,12 @@ const gists = new Gists({
 module.exports = async (request, response) => {
 	response.setHeader('Access-Control-Allow-Origin', '*');
 	try {
-		const hostname = production ? 'https://codimg.xyz' : 'http://localhost:3000';
 		const startTime = performance.now();
 		const settings = { ...request.query };
 
 		console.info('\n', '🎉 ', request.url);
 		console.info('🛠 ', `Environment: ${process.env.NODE_ENV}`);
 		console.info('🛠 ', `Rendering Method: Puppeteer, Chromium headless`);
-    console.info('🛠 ', `Hostname: ${hostname}`);
     
     if (settings.gistId) {
       console.info('🛠 ', `Gist ID: ${settings.gistId}`);
@@ -97,10 +95,10 @@ module.exports = async (request, response) => {
 		if (settings.backgroundColor) { queryParams.set('backgroundColor', settings.backgroundColor); }
 		if (settings.padding) { queryParams.set('padding', settings.padding); }
 
-		const pageUrl = `${hostname}/code.html?${queryParams.toString()}`;
+		const pageUrl = `file://${process.cwd()}/public/code.html?${queryParams.toString()}`;
 
 		await Promise.all(fonts.map((font) => {
-			const fontUrl = `${hostname}/fonts/${font}`;
+			const fontUrl = `file://${process.cwd()}/public/fonts/${font}`;
 			console.info('🛠 ', `Loading ${fontUrl}`);
 			return chromium.font(fontUrl);
 		}));
