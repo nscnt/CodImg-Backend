@@ -1,5 +1,6 @@
 /* eslint-disable no-console, no-undef */
 const chromium = require('chrome-aws-lambda'),
+  Gists = require('gists'),
 	{ performance } = require('perf_hooks'),
 	beautify = require('js-beautify'),
 	production = process.env.NODE_ENV === 'production',
@@ -11,6 +12,11 @@ const chromium = require('chrome-aws-lambda'),
 
 require('dotenv').config();
 
+const gists = new Gists({
+  username: process.env.GITHUBUSER,
+  password: process.env.GITHUBPASS
+});
+
 module.exports = async (request, response) => {
 	response.setHeader('Access-Control-Allow-Origin', '*');
 	try {
@@ -21,7 +27,20 @@ module.exports = async (request, response) => {
 		console.info('\n', '🎉 ', request.url);
 		console.info('🛠 ', `Environment: ${process.env.NODE_ENV}`);
 		console.info('🛠 ', `Rendering Method: Puppeteer, Chromium headless`);
-		console.info('🛠 ', `Hostname: ${hostname}`);
+    console.info('🛠 ', `Hostname: ${hostname}`);
+    
+    if (settings.gistId) {
+      console.info('🛠 ', `Gist ID: ${settings.gistId}`);
+      try {
+        const gist = (await gists.get(settings.gistId)).body;
+        console.log(gist)
+        settings.code = Object.values(gist.files)[0].content;
+      } catch (err) {
+        return sendErrorResponse(response, {
+          message: 'Gist cannot be found'
+        })
+      }
+    }
 
 		if (typeof settings.code !== 'string') {
 			return sendErrorResponse(response, {
