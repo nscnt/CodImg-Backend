@@ -98,7 +98,7 @@ module.exports = async (request, response) => {
 		const pageUrl = `file://${process.cwd()}/public/code.html?${queryParams.toString()}`;
 
 		await Promise.all(fonts.map((font) => {
-			const fontUrl = `file://${process.cwd()}/public/fonts/${font}`;
+			const fontUrl = `${process.cwd()}/public/fonts/${font}`;
 			console.info('🛠 ', `Loading ${fontUrl}`);
 			return chromium.font(fontUrl);
 		}));
