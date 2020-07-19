@@ -1,4 +1,4 @@
-export default (request, response) => {
+module.exports = (request, response) => {
 	console.log('');
 	console.log('🎉 ', request.url);
 	response.setHeader('Access-Control-Allow-Origin', '*');
@@ -12,6 +12,6 @@ export default (request, response) => {
 		'javascript',
 		'python',
 		'rust',
-		'typescript',
+		'typescript'
 	]);
 };
