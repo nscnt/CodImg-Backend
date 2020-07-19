@@ -49,17 +49,19 @@ module.exports = async (request, response) => {
 		settings.width = isNaN(settings.width = Math.min(Math.abs(settings.width), 1920)) ? defaults.viewport.width : settings.width;
 		!settings.backgroundColor && (settings.backgroundColor = '');
 		!settings.backgroundImage && (settings.backgroundImage = '');
-		settings.showBackground = settings.showBackground !== 'false';
-		settings.padding = clamp(settings.padding, 0, 10);
+    settings.showBackground = settings.showBackground !== 'false';
+    settings.hideButtons = settings.hideButtons === 'true';
+    settings.padding = clamp(settings.padding, 0, 10);
 
 		console.info('🛠 ', `Theme: ${settings.theme}`);
 		console.info('🛠 ', `Language: ${settings.language}`);
-		console.info('🛠 ', `Line Numbers: ${!!settings.lineNumbers}`);
+		console.info('🛠 ', `Line Numbers: ${settings.lineNumbers}`);
 		console.info('🛠 ', `Scale Factor: ${settings.scaleFactor}`);
 		console.info('🛠 ', `Width: ${settings.width}`);
 		console.info('🛠 ', `Background Color: ${settings.backgroundColor}`);
 		console.info('🛠 ', `Background Image: ${settings.backgroundImage}`);
-		console.info('🛠 ', `Show Background: ${!!settings.showBackground}`);
+		console.info('🛠 ', `Show Background: ${settings.showBackground}`);
+		console.info('🛠 ', `Hide Buttons: ${settings.hideButtons}`);
 		console.info('🛠 ', `Padding: ${settings.padding}`);
 
 		// eslint-disable-next-line camelcase
@@ -68,9 +70,10 @@ module.exports = async (request, response) => {
 		const queryParams = new URLSearchParams();
 		queryParams.set('theme', settings.theme);
 		queryParams.set('language', settings.language);
-		queryParams.set('lineNumbers', !!settings.lineNumbers);
+		queryParams.set('lineNumbers', settings.lineNumbers);
 		queryParams.set('code', settings.trimmedCodeSnippet);
-		queryParams.set('showBackground', !!settings.showBackground);
+		queryParams.set('showBackground', settings.showBackground);
+		queryParams.set('hideButtons', settings.hideButtons);
 		if (settings.backgroundImage) { queryParams.set('backgroundImage', settings.backgroundImage); }
 		if (settings.backgroundColor) { queryParams.set('backgroundColor', settings.backgroundColor); }
 		if (settings.padding) { queryParams.set('padding', settings.padding); }

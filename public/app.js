@@ -6,10 +6,6 @@ function injectStylesheetForTheme(stylesheetUrl) {
 	document.head.appendChild(link);
 }
 
-function injectTheme(themeName) {
-	injectStylesheetForTheme(`./prism-themes/prism-${themeName}.css`);
-}
-
 function getRandomColor() {
 	return `hsla(${Math.random() * 360}, 100%, 50%, 1)`;
 }
@@ -26,7 +22,8 @@ const views = {
 	code: document.querySelector('#code'),
 	background: document.querySelector('.background'),
 	codeContainer: document.querySelector('#code-container'),
-	windowHeader: document.querySelector('#header')
+    windowHeader: document.querySelector('#header'),
+    buttons: document.querySelector('#buttons')
 };
 
 const queryParams = new URLSearchParams(window.location.search);
@@ -37,11 +34,12 @@ const options = {
 	theme: queryParams.get('theme') || defaults.theme,
 	background: {
 		image: queryParams.get('backgroundImage'),
-		color: queryParams.get('backgroundColor') || defaults.backgroundColor,
+		color: queryParams.get('backgroundColor'),
 		padding: queryParams.get('padding') || defaults.padding,
 		enabled: queryParams.has('showBackground') ? queryParams.get('showBackground') === 'true' : defaults.showBackground
 	},
-	showLineNumbers: queryParams.has('lineNumbers') && queryParams.get('lineNumbers') === 'true'
+    showLineNumbers: queryParams.has('lineNumbers') && queryParams.get('lineNumbers') === 'true',
+    hideButtons: queryParams.has('hideButtons') && queryParams.get('hideButtons') === 'true',
 };
 
 options.language && views.codeContainer.classList.add(`language-${options.language}`);
@@ -49,11 +47,11 @@ options.language && views.codeContainer.classList.add(`language-${options.langua
 if (options.background.enabled) {
 	if (options.background.color) {
 		views.background.style.background = options.background.color;
-	}
-
-	if (options.background.image) {
+	}else if (options.background.image) {
 		views.background.style.backgroundImage = `url(${options.background.image})`;
-	}
+	}else{
+		views.background.style.background = defaults.backgroundColor;
+    }
 
 	if (options.background.padding) {
 		views.background.style.padding = `${options.background.padding}rem`;
@@ -62,11 +60,14 @@ if (options.background.enabled) {
 	views.background.style.padding = '0px';
 }
 
-injectTheme(options.theme);
-injectStylesheetForTheme('./base.css');
+injectStylesheetForTheme(`./prism-themes/prism-${options.theme}.css`);
 
 if (!options.showLineNumbers) {
 	views.codeContainer.classList.remove('line-numbers');
+}
+
+if (options.hideButtons) {
+    views.buttons.style.display = 'none';
 }
 
 if (options.code) {
