@@ -14,7 +14,7 @@
     "dotenv": "8.2.0",
     "gists": "2.0.0",
     "js-beautify": "1.11.0",
-    "puppeteer-core": "^3.0.1",
+    "puppeteer-core": "^3.3.0",
     "vercel": "^19.1.1"
   },
   "devDependencies": {
