@@ -5,10 +5,10 @@ Generate Beautiful images of your code!
 
 The API supports the following 4 operations
 
-* [Get Image](#Get%20Image)
-* [List Themes](#List%20Themes)
-* [List Languages](#3List%20Languages)
-* [List Fonts](#3List%20Fonts)
+* [Get Image](#get-images)
+* [List Themes](#list-themes)
+* [List Languages](#list-languages)
+* [List Fonts](#list-fonts)
 
 ### Get Image
 
