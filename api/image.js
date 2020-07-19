@@ -1,5 +1,5 @@
-const themes = ["a11y-dark","atom-dark","base16-ateliersulphurpool.light","cb","darcula","default","dracula","duotone-dark","duotone-earth","duotone-forest","duotone-light","duotone-sea","duotone-space","ghcolors","hopscotch","material-dark","material-light","material-oceanic","nord","pojoaque","shades-of-purple","synthwave84","vs","vsc-dark-plus","xonokai"];
-const languages = ["c","css","cpp","go","html","java","javascript","python","rust","typescript"];
+const themes = ["a11y-dark", "atom-dark", "base16-ateliersulphurpool.light", "cb", "darcula", "default", "dracula", "duotone-dark", "duotone-earth", "duotone-forest", "duotone-light", "duotone-sea", "duotone-space", "ghcolors", "hopscotch", "material-dark", "material-light", "material-oceanic", "nord", "pojoaque", "shades-of-purple", "synthwave84", "vs", "vsc-dark-plus", "xonokai"];
+const languages = ["c", "css", "cpp", "go", "html", "java", "javascript", "python", "rust", "typescript"];
 const chromium = require('chrome-aws-lambda');
 const { performance } = require('perf_hooks');
 const beautify = require('js-beautify');
@@ -19,7 +19,7 @@ const fonts = [
 ];
 
 function toSeconds(ms) {
-    const x = ms/1000;
+    const x = ms / 1000;
     return x.toFixed(2);
 }
 
@@ -40,14 +40,14 @@ function trimLineEndings(text) {
 
 module.exports = async (request, response) => {
     try {
-        const hostname =  production ? "https://codimg.xyz" : "http://localhost:3000";
+        const hostname = production ? "https://codimg.xyz" : "http://localhost:3000";
         const tStart = performance.now();
         console.log('');
         console.log('🎉 ', request.url);
         console.log('🛠 ', `Environment: ${process.env.NODE_ENV}`);
         console.log('🛠 ', `Rendering Method: Puppeteer, Chromium headless`);
         console.log('🛠 ', `Hostname: ${hostname}`);
-        
+
         let theme = request.query['theme'];
         let language = request.query['language'];
         let lineNumbers = request.query['line-numbers'] || 'false';
@@ -58,7 +58,7 @@ module.exports = async (request, response) => {
         let code = request.query["code"] || request.body;
         let width = DEFAULTS.VIEWPORT.WIDTH;
         let scaleFactor = DEFAULTS.VIEWPORT.DEVICE_SCALE_FACTOR;
-        
+
         if (typeof code != 'string') {
             console.log('❌ ', 'Code snippet missing');
             sendErrorResponse(response, {
@@ -66,7 +66,7 @@ module.exports = async (request, response) => {
             });
             return;
         }
-        
+
         if (!language || languages.indexOf(language) === -1) {
             console.log('❌ ', !language ? 'Language not specified' : `Unknown language '${language}'`);
             sendErrorResponse(response, {
@@ -75,7 +75,7 @@ module.exports = async (request, response) => {
             });
             return;
         }
-        
+
         if (themes.indexOf(theme) === -1) {
             console.log('❌ ', `Unknown theme '${theme}'`);
             sendErrorResponse(response, {
@@ -84,7 +84,7 @@ module.exports = async (request, response) => {
             });
             return;
         }
-        
+
         if (backgroundPadding) {
             try {
                 let padding = parseInt(backgroundPadding);
@@ -93,14 +93,14 @@ module.exports = async (request, response) => {
                 backgroundPadding = '';
             }
         }
-        
+
         try {
             scaleFactor = parseInt(request.query['scale']) || DEFAULTS.VIEWPORT.DEVICE_SCALE_FACTOR;
             scaleFactor = Math.min(Math.max(1, scaleFactor), 5); // Make sure number is in range between 1-5
         } catch (e) {
             scaleFactor = DEFAULTS.VIEWPORT.DEVICE_SCALE_FACTOR;
         }
-        
+
         console.log('🛠 ', `Theme: ${theme}`);
         console.log('🛠 ', `Language: ${language}`);
         console.log('🛠 ', `Line Numbers: ${lineNumbers}`);
@@ -110,7 +110,7 @@ module.exports = async (request, response) => {
         console.log('🛠 ', `Background Image: ${backgroundImage}`);
         console.log('🛠 ', `Show Background: ${showBackground}`);
         console.log('🛠 ', `Background Padding: ${backgroundPadding}`);
-        
+
         try {
             width = Math.min(Math.abs(parseInt(request.query['width'])), 1920);
         } catch (exception) {
@@ -119,7 +119,7 @@ module.exports = async (request, response) => {
         }
 
         let trimmedCodeSnippet = language == "javascript" ? beautify(code, { indent_size: 2, space_in_empty_paren: true }) : trimLineEndings(code);
-        
+
         let queryParams = new URLSearchParams();
         theme && queryParams.set('theme', theme);
         language && queryParams.set('language', language);
@@ -129,16 +129,16 @@ module.exports = async (request, response) => {
         queryParams.set('background-color', backgroundColor);
         queryParams.set('show-background', showBackground);
         queryParams.set('padding', backgroundPadding);
-        
+
         const queryParamsString = queryParams.toString();
         const pageUrl = `${hostname}/code.html?${queryParamsString}`;
-        
+
         fonts.forEach(async (font) => {
             const fontUrl = `${hostname}/fonts/${font}`;
             console.log('🛠 ', `Loading ${fontUrl}`);
             await chromium.font(fontUrl);
         });
-        
+
         console.log('🛠 ', 'Preview Page URL', pageUrl);
         let browser = await chromium.puppeteer.launch({
             args: chromium.args,
@@ -149,11 +149,11 @@ module.exports = async (request, response) => {
         });
         const page = await browser.newPage();
         await page.goto(pageUrl);
-        await page.setViewport({ 
-            deviceScaleFactor: scaleFactor, 
-            width: width || DEFAULTS.VIEWPORT.WIDTH, 
-            height: DEFAULTS.VIEWPORT.HEIGHT, 
-            isMobile: false 
+        await page.setViewport({
+            deviceScaleFactor: scaleFactor,
+            width: width || DEFAULTS.VIEWPORT.WIDTH,
+            height: DEFAULTS.VIEWPORT.HEIGHT,
+            isMobile: false
         });
         // await page.waitForFunction('window.LOAD_COMPLETE === true');
         await page.waitForSelector('#container')
@@ -169,8 +169,8 @@ module.exports = async (request, response) => {
             return background;
         });
         var codeView = await page.$(showBackground == 'false' || backgroundPadding == '0' ? '#window' : '#container');
-        var image = await codeView.screenshot(); 
-        console.log('⏰ ', `Operation finished in ${ toSeconds(performance.now() - tStart)} seconds`);
+        var image = await codeView.screenshot();
+        console.log('⏰ ', `Operation finished in ${toSeconds(performance.now() - tStart)} seconds`);
         response.status(200);
         response.setHeader('Content-Type', 'image/png');
         response.setHeader('Access-Control-Allow-Origin', '*');
@@ -178,6 +178,6 @@ module.exports = async (request, response) => {
         await page.close();
         await browser.close();
     } catch (e) {
-        console.error('❌ ', 'Uncaught Exception',e);
+        console.error('❌ ', 'Uncaught Exception', e);
     }
 }
