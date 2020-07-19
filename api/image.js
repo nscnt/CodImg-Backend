@@ -131,6 +131,7 @@ const chromium = require('chrome-aws-lambda'),
 			isMobile: false,
 		});
     await page.waitForSelector('#container')
+    await page.waitForSelector('#window')
 		await page.evaluate(() => {
 			let background = '';
 			const codeContainer = document.getElementById('code-container');
