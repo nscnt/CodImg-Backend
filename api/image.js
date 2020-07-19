@@ -70,7 +70,7 @@ module.exports = async (request, response) => {
 		!settings.backgroundImage && (settings.backgroundImage = '');
     settings.showBackground = settings.showBackground !== 'false';
     settings.hideButtons = settings.hideButtons === 'true';
-    settings.padding = clamp(settings.padding, -1, 10);
+    settings.padding = clamp(settings.padding, 0, 10);
 
 		console.info('🛠 ', `Theme: ${settings.theme}`);
 		console.info('🛠 ', `Language: ${settings.language}`);
