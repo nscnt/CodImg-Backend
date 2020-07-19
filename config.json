@@ -1,0 +1,50 @@
+{
+	"themes": [
+		"a11y-dark",
+		"atom-dark",
+		"base16-ateliersulphurpool.light",
+		"cb",
+		"darcula",
+		"default",
+		"dracula",
+		"duotone-dark",
+		"duotone-earth",
+		"duotone-forest",
+		"duotone-light",
+		"duotone-sea",
+		"duotone-space",
+		"ghcolors",
+		"hopscotch",
+		"material-dark",
+		"material-light",
+		"material-oceanic",
+		"nord",
+		"pojoaque",
+		"shades-of-purple",
+		"synthwave84",
+		"vs",
+		"vsc-dark-plus",
+		"xonokai"
+	],
+	"languages": [
+		"c",
+		"css",
+		"cpp",
+		"go",
+		"html",
+		"java",
+		"javascript",
+		"python",
+		"rust",
+		"typescript"
+	],
+	"fonts": ["Inconsolata.ttf", "NotoColorEmoji.ttf"],
+	"defaults": {
+		"viewport": {
+			"width": 1000,
+			"height": 1000,
+			"deviceScaleFactor": 2
+		},
+		"index_page": "code.html"
+	}
+}
