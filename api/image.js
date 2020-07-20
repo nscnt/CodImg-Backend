@@ -33,7 +33,6 @@ module.exports = async (request, response) => {
       console.info('🛠 ', `Gist ID: ${settings.gistId}`);
       try {
         const gist = (await gists.get(settings.gistId)).body;
-        console.log(gist)
         settings.code = Object.values(gist.files)[0].content;
       } catch (err) {
         return sendErrorResponse(response, {
