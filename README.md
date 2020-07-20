@@ -2,7 +2,7 @@
 Generate Beautiful images of your code!
 
 ## Example:
-![](https://codimg.xyz/api/image?hideButtons=false&lineNumbers=true&language=javascript&theme=hopscotch&show-background=true&gistId=f1cd4a02f0171118171fbaae7f3a2202)
+![](https://user-images.githubusercontent.com/17516174/87959556-6030f780-cab3-11ea-87b2-dba5856eac78.png)
 
 `![](https://codimg.xyz/api/image?hideButtons=false&lineNumbers=true&language=javascript&theme=hopscotch&show-background=true&gistId=f1cd4a02f0171118171fbaae7f3a2202)` - the query for above image
 
