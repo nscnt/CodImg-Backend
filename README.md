@@ -2,7 +2,7 @@
 Generate Beautiful images of your code!
 
 ## Example:
-![](https://codimg.xyz/api/image?hideButtons=false&lineNumbers=true&language=javascript&theme=hopscotch&show-background=true&gistId=f1cd4a02f0171118171fbaae7f3a2202)
+![](https://user-images.githubusercontent.com/17516174/87959556-6030f780-cab3-11ea-87b2-dba5856eac78.png)
 
 `![](https://codimg.xyz/api/image?hideButtons=false&lineNumbers=true&language=javascript&theme=hopscotch&show-background=true&gistId=f1cd4a02f0171118171fbaae7f3a2202)` - the query for above image
 
@@ -18,9 +18,8 @@ The API supports the following 4 operations
 ### Get Image
 
 - HTTP Method: `POST`/`GET`
-- Endpoint: `/api/to-image`
-- Content-Type: `text/plain`
-- Response Content Type: `image/png`
+- Endpoint: `/api/image`
+- Content Type: `image/png`
 
 **Query Parameters**
 
@@ -37,7 +36,7 @@ The API supports the following 4 operations
 | backgroundImage | string  |  false   |                                Sets the background Image of the image                                |                   valid URL to image                    | https://picsum.photos/1920/1080  |
 | showBackground  | boolean |  false   |                             Controls whether to show or hide background                              |                       true/false                        |               true               |
 |   hideButtons   | boolean |  false   |                               Controls whether to show or hide buttons                               |                       true/false                        |               true               |
-|     padding     | integer |  false   | controls the size of padding around the image. setting to 0 is like setting showBackground to false. |                          0-10                           |                5                 |
+|     padding     | integer |  false   | controls the size of padding around the image. |                          0-10                           |                5                 |
 
 **Description:** Given a code snippet in the request body, an image will be returned with the specified theme and language options.
 
