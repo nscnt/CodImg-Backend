@@ -43,8 +43,8 @@
 		"viewport": {
 			"width": 1000,
 			"height": 1000,
-			"deviceScaleFactor": 2
+			"scaleFactor": 2
 		},
-		"index_page": "code.html"
+    "theme": "vsc-dark-plus"
 	}
 }

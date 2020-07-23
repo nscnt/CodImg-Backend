@@ -3,7 +3,7 @@ const chromium = require('chrome-aws-lambda'),
   Gists = require('gists'),
 	{ performance } = require('perf_hooks'),
 	beautify = require('js-beautify'),
-	production = process.env.NODE_ENV === 'production',
+  production = process.env.NODE_ENV === 'production',
 	{ themes, languages, fonts, defaults } = JSON.parse(require('fs').readFileSync(`${__dirname}/../config.json`)),
 	toSeconds = (ms) => (ms / 1000).toFixed(2),
 	sendErrorResponse = (res, err) => !console.info('❌ ', err.message) && res.status(400).send(err),
@@ -12,10 +12,7 @@ const chromium = require('chrome-aws-lambda'),
 
 require('dotenv').config();
 
-const gists = new Gists({
-  username: process.env.GITHUBUSER,
-  password: process.env.GITHUBPASS
-});
+const gists = new Gists();
 
 module.exports = async (request, response) => {
 	response.setHeader('Access-Control-Allow-Origin', '*');
@@ -24,13 +21,12 @@ module.exports = async (request, response) => {
 		const startTime = performance.now();
 		const settings = { ...request.query };
 
-		console.info('\n', '🎉 ', request.url);
-		console.info('🛠 ', `Environment: ${process.env.NODE_ENV}`);
-		console.info('🛠 ', `Rendering Method: Puppeteer, Chromium headless`);
-    console.info('🛠 ', `Hostname: ${hostname}`);
+		!production && console.info('\n', '🎉 ', request.url);
+		!production && console.info('🛠 ', `Environment: ${process.env.NODE_ENV}`);
+    !production && console.info('🛠 ', `Hostname: ${hostname}`);
     
     if (settings.gistId) {
-      console.info('🛠 ', `Gist ID: ${settings.gistId}`);
+      !production && console.info('🛠 ', `Gist ID: ${settings.gistId}`);
       try {
         const gist = (await gists.get(settings.gistId)).body;
         settings.code = Object.values(gist.files)[0].content;
@@ -61,9 +57,9 @@ module.exports = async (request, response) => {
 			});
 		}
 
-		!settings.theme && ([settings.theme] = themes);
+		!settings.theme && (settings.theme = defaults.theme);
 		settings.lineNumbers = settings.lineNumbers === 'true';
-		settings.scaleFactor = clamp(settings.scaleFactor, 1, 5, defaults.viewport.deviceScaleFactor);
+		settings.scaleFactor = clamp(settings.scaleFactor, 1, 5, defaults.viewport.scaleFactor);
 		settings.width = isNaN(settings.width = Math.min(Math.abs(settings.width), 1920)) ? defaults.viewport.width : settings.width;
 		!settings.backgroundColor && (settings.backgroundColor = '');
 		!settings.backgroundImage && (settings.backgroundImage = '');
@@ -71,19 +67,19 @@ module.exports = async (request, response) => {
     settings.hideButtons = settings.hideButtons === 'true';
     settings.padding = clamp(settings.padding, 0, 10);
 
-		console.info('🛠 ', `Theme: ${settings.theme}`);
-		console.info('🛠 ', `Language: ${settings.language}`);
-		console.info('🛠 ', `Line Numbers: ${settings.lineNumbers}`);
-		console.info('🛠 ', `Scale Factor: ${settings.scaleFactor}`);
-		console.info('🛠 ', `Width: ${settings.width}`);
-		console.info('🛠 ', `Background Color: ${settings.backgroundColor}`);
-		console.info('🛠 ', `Background Image: ${settings.backgroundImage}`);
-		console.info('🛠 ', `Show Background: ${settings.showBackground}`);
-		console.info('🛠 ', `Hide Buttons: ${settings.hideButtons}`);
-		console.info('🛠 ', `Padding: ${settings.padding}`);
+		!production && console.info('🛠 ', `Theme: ${settings.theme}`);
+		!production && console.info('🛠 ', `Language: ${settings.language}`);
+		!production && console.info('🛠 ', `Line Numbers: ${settings.lineNumbers}`);
+		!production && console.info('🛠 ', `Scale Factor: ${settings.scaleFactor}`);
+		!production && console.info('🛠 ', `Width: ${settings.width}`);
+		!production && console.info('🛠 ', `Background Color: ${settings.backgroundColor}`);
+		!production && console.info('🛠 ', `Background Image: ${settings.backgroundImage}`);
+		!production && console.info('🛠 ', `Show Background: ${settings.showBackground}`);
+		!production && console.info('🛠 ', `Hide Buttons: ${settings.hideButtons}`);
+		!production && console.info('🛠 ', `Padding: ${settings.padding}`);
 
 		// eslint-disable-next-line camelcase
-		settings.trimmedCodeSnippet = settings.language === 'javascript' ? beautify(settings.code, { indent_size: 2, space_in_empty_paren: true }) : trimLineEndings(settings.code);
+		settings.trimmedCodeSnippet = trimLineEndings(settings.code);
 
 		const queryParams = new URLSearchParams();
 		queryParams.set('theme', settings.theme);
@@ -100,26 +96,25 @@ module.exports = async (request, response) => {
 
 		await Promise.all(fonts.map((font) => {
 			const fontUrl = `${hostname}/fonts/${font}`;
-			console.info('🛠 ', `Loading ${fontUrl}`);
+			!production && console.info('🛠 ', `Loading ${fontUrl}`);
 			return chromium.font(fontUrl);
 		}));
 
 		console.info('🛠 ', 'Preview Page URL', pageUrl);
 		const browser = await chromium.puppeteer.launch({
-			args: chromium.args,
-			defaultViewport: chromium.defaultViewport,
+      args: chromium.args,
+			defaultViewport: {
+        deviceScaleFactor: settings.scaleFactor,
+        width: settings.width,
+        height: defaults.viewport.height,
+        isMobile: false
+      },
 			executablePath: await chromium.executablePath,
 			headless: true,
 			ignoreHTTPSErrors: true
 		});
-		const page = await browser.newPage();
-		await page.goto(pageUrl);
-		await page.setViewport({
-			deviceScaleFactor: settings.scaleFactor,
-			width: settings.width,
-			height: defaults.viewport.height,
-			isMobile: false
-		});
+    const page = await browser.newPage();
+    await page.goto(pageUrl);
 		await page.waitForSelector('#container') && await page.waitForSelector('#window');
 		await page.evaluate(() => {
 			const codeContainer = document.getElementById('code-container');
