@@ -45,6 +45,9 @@
 			"height": 1000,
 			"deviceScaleFactor": 2
 		},
-		"index_page": "code.html"
+		"fontSize": "13px",
+		"theme": "vsc-dark-plus",
+		"padding": 5,
+		"code": "console.log('Hello World');"
 	}
 }

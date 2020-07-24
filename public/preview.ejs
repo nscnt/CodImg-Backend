@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Code Preview</title>
+		<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+		<link href="/base.css" rel="stylesheet">
+		<script src="/prism.js"></script>
+</head>
+<body data-theme="<%= theme %>">
+	<div class="background" id="container" 
+		data-backgroundcolor="<%= backgroundColor %>" 
+		data-backgroundimage="<%= backgroundImage %>"
+		data-showbackground="<%= showBackground %>"
+		data-padding="<%= padding %>">
+		<div class="window-outline" id="window">
+			<div class="window-header" id="header">
+				<% if (hideButtons !== 'true') { %>
+					<svg id="buttons" xmlns="http://www.w3.org/2000/svg" width="54" height="14" viewBox="0 0 54 14"><g fill="none" fill-rule="evenodd" transform="translate(1 1)"><circle cx="6" cy="6" r="6" fill="#FF5F56" stroke="#E0443E" stroke-width=".5"></circle><circle cx="26" cy="6" r="6" fill="#FFBD2E" stroke="#DEA123" stroke-width=".5"></circle><circle cx="46" cy="6" r="6" fill="#27C93F" stroke="#1AAB29" stroke-width=".5"></circle></g></svg>
+				<% } %>
+				</div>
+			<div class="window-body">
+			<pre class="language-<%= language %><% if (showLineNumbers === 'true') { %> line-numbers<% } %>" id="code-container" style="border-radius: 0; white-space:pre-wrap;"><code id="code"><%= code %></code></pre>
+			</div>
+		</div>
+	</div>
+	<script>
+		const container = document.getElementById('container');
+		container.style.backgroundColor = container.dataset.backgroundcolor;
+		container.dataset.backgroundimage && (container.style.backgroundImage = `url(${container.dataset.backgroundimage})`);
+		container.style.padding = container.dataset.showbackground === 'false' ? '0px' : `${container.dataset.padding}rem`;
+
+		const link = document.createElement('link');
+		link.href = `/prism-themes/prism-${document.body.dataset.theme}.css`;
+		link.rel = 'stylesheet';
+		document.head.appendChild(link);
+	</script>
+</body>
+</html>

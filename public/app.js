@@ -22,8 +22,8 @@ const views = {
 	code: document.querySelector('#code'),
 	background: document.querySelector('.background'),
 	codeContainer: document.querySelector('#code-container'),
-    windowHeader: document.querySelector('#header'),
-    buttons: document.querySelector('#buttons')
+	windowHeader: document.querySelector('#header'),
+	buttons: document.querySelector('#buttons')
 };
 
 const queryParams = new URLSearchParams(window.location.search);
@@ -60,7 +60,7 @@ if (options.background.enabled) {
 	views.background.style.padding = '0px';
 }
 
-injectStylesheetForTheme(`./prism-themes/prism-${options.theme}.css`);
+injectStylesheetForTheme(`/prism-themes/prism-${options.theme}.css`);
 
 if (!options.showLineNumbers) {
 	views.codeContainer.classList.remove('line-numbers');

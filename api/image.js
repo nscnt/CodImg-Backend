@@ -61,11 +61,13 @@ module.exports = async (request, response) => {
 			});
 		}
 
+		console.log(settings)
+
 		!settings.theme && ([settings.theme] = themes);
-		settings.lineNumbers = settings.lineNumbers === 'true';
+		settings.showLineNumbers = settings.showLineNumbers === 'true';
 		settings.scaleFactor = clamp(settings.scaleFactor, 1, 5, defaults.viewport.deviceScaleFactor);
 		settings.width = isNaN(settings.width = Math.min(Math.abs(settings.width), 1920)) ? defaults.viewport.width : settings.width;
-		!settings.backgroundColor && (settings.backgroundColor = '');
+		!settings.backgroundColor && (settings.backgroundImage && (settings.backgroundColor = '') || (settings.backgroundColor = `hsla(${(Math.random() * 360).toFixed(0)}, 100%, 50%, 1)`));
 		!settings.backgroundImage && (settings.backgroundImage = '');
     settings.showBackground = settings.showBackground !== 'false';
     settings.hideButtons = settings.hideButtons === 'true';
@@ -73,7 +75,7 @@ module.exports = async (request, response) => {
 
 		console.info('🛠 ', `Theme: ${settings.theme}`);
 		console.info('🛠 ', `Language: ${settings.language}`);
-		console.info('🛠 ', `Line Numbers: ${settings.lineNumbers}`);
+		console.info('🛠 ', `Line Numbers: ${settings.showLineNumbers}`);
 		console.info('🛠 ', `Scale Factor: ${settings.scaleFactor}`);
 		console.info('🛠 ', `Width: ${settings.width}`);
 		console.info('🛠 ', `Background Color: ${settings.backgroundColor}`);
@@ -88,7 +90,7 @@ module.exports = async (request, response) => {
 		const queryParams = new URLSearchParams();
 		queryParams.set('theme', settings.theme);
 		queryParams.set('language', settings.language);
-		queryParams.set('lineNumbers', settings.lineNumbers);
+		queryParams.set('showLineNumbers', settings.showLineNumbers);
 		queryParams.set('code', settings.trimmedCodeSnippet);
 		queryParams.set('showBackground', settings.showBackground);
 		queryParams.set('hideButtons', settings.hideButtons);
@@ -96,7 +98,7 @@ module.exports = async (request, response) => {
 		if (settings.backgroundColor) { queryParams.set('backgroundColor', settings.backgroundColor); }
 		if (settings.padding) { queryParams.set('padding', settings.padding); }
 
-		const pageUrl = `${hostname}/code.html?${queryParams.toString()}`;
+		const pageUrl = `${hostname}/private/preview?${queryParams.toString()}`;
 
 		await Promise.all(fonts.map((font) => {
 			const fontUrl = `${hostname}/fonts/${font}`;
