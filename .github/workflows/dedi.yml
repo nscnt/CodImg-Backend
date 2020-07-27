@@ -1,5 +1,8 @@
 name: push to dedi
-on: push
+on: 
+  push:
+    branches:
+      - express
 jobs:
   repo-sync:
     runs-on: ubuntu-latest
