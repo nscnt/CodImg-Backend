@@ -15,4 +15,4 @@ jobs:
         git remote add staging github@138.201.218.181:/codimg
         git config --global user.email "puf17640@spengergasse.at"
         git config --global user.name "puf17640"
-        git push -f staging master
+        git push -f staging express
