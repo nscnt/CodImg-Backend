@@ -43,8 +43,9 @@
 		"viewport": {
 			"width": 1000,
 			"height": 1000,
-			"deviceScaleFactor": 2
+			"scaleFactor": 2
 		},
+<<<<<<< HEAD
 		"theme": "vsc-dark-plus",
 		"language": "javascript",
 		"backgroundColor": "",
@@ -55,5 +56,8 @@
 		"showBackground": false,
 		"code": "console.log('Hello World');",
 		"fontSize": "13px"
+=======
+    "theme": "vsc-dark-plus"
+>>>>>>> 0f0165849fe9c9f6e2353e2a8ff0e2c039d5273f
 	}
 }
