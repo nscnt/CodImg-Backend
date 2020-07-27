@@ -45,9 +45,15 @@
 			"height": 1000,
 			"deviceScaleFactor": 2
 		},
-		"fontSize": "13px",
 		"theme": "vsc-dark-plus",
+		"language": "javascript",
+		"backgroundColor": "",
+		"backgroundImage": "",
+		"hideButtons": false,
+		"showLineNumbers": false,
 		"padding": 5,
-		"code": "console.log('Hello World');"
+		"showBackground": false,
+		"code": "console.log('Hello World');",
+		"fontSize": "13px"
 	}
 }

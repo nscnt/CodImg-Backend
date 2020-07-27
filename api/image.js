@@ -18,7 +18,6 @@ const gists = new Gists({
 });
 
 module.exports = async (request, response) => {
-	response.setHeader('Access-Control-Allow-Origin', '*');
 	try {
 		const hostname = production ? 'https://codimg.xyz' : 'http://localhost:3000';
 		const startTime = performance.now();
@@ -26,7 +25,6 @@ module.exports = async (request, response) => {
 
 		console.info('\n', '🎉 ', request.url);
 		console.info('🛠 ', `Environment: ${process.env.NODE_ENV}`);
-		console.info('🛠 ', `Rendering Method: Puppeteer, Chromium headless`);
     console.info('🛠 ', `Hostname: ${hostname}`);
     
     if (settings.gistId) {
@@ -60,8 +58,6 @@ module.exports = async (request, response) => {
 				themes
 			});
 		}
-
-		console.log(settings)
 
 		!settings.theme && ([settings.theme] = themes);
 		settings.showLineNumbers = settings.showLineNumbers === 'true';

@@ -1,7 +1,7 @@
 const express = require('express'),
 	app = express(),
 	path = require('path'),
-	{ themes, languages, fonts, defaults } = JSON.parse(require('fs').readFileSync(`${__dirname}/config.json`));
+	config = JSON.parse(require('fs').readFileSync(`${__dirname}/config.json`));
 
 app.use(require('cors')({ origin: '*' }));
 app.use(express.static(path.join(__dirname, '/public')));
@@ -9,23 +9,30 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.set('views', path.join(__dirname, '/public'));
 app.set('view engine', 'ejs');
 
-['image', 'fonts', 'languages', 'themes'].forEach(key => app.get(`/api/${key}`, require(`./api/${key}`)));
-
-app.get('/private/preview', (req, res, next) => {
-	const { theme = defaults.theme, language = 'javascript', backgroundColor = 'white', backgroundImage = '', 
-		hideButtons = false, showLineNumbers = false, padding = defaults.padding, showBackground = true, code = defaults.code } = req.query;
-	res.render('preview', { 
-		theme,
-		language,
-		backgroundColor,
-		backgroundImage,
-		hideButtons,
-		showLineNumbers,
-		padding,
-		showBackground,
-		code
-	 });
+app.use((req, res, next) => {
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	next();
 });
+
+app.get('/api/image', require('./api/image'));
+
+['languages', 'themes'].forEach(key => app.get(`/api/${key}`, (req, res, next) => {
+	console.info('\n', '🎉 ', req.url);
+	res.send(config[key]);
+}));
+
+app.get('/private/preview', (req, res, next) => res.render('preview', ({ 
+	theme = config.defaults.theme, 
+	language = config.defaults.language, 
+	backgroundColor = config.defaults.backgroundColor, 
+	backgroundImage = config.defaults.backgroundImage, 
+	hideButtons = config.defaults.hideButtons, 
+	showLineNumbers = config.defaults.showLineNumbers, 
+	padding = config.defaults.padding, 
+	showBackground = config.defaults.showBackground, 
+	code = config.defaults.code,
+	width = undefined
+} = req.query)));
 
 app.use((req, res, next) => {
 	if (process.env.NODE_ENV !== 'production')
