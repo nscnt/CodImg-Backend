@@ -9,8 +9,6 @@ const chromium = require('chrome-aws-lambda'),
 	trimLineEndings = (text) => text.split('\n').map((line) => line.trimEnd()).join('\n'),
 	clamp = (val, min, max = Infinity, whenNaN) => isNaN(val = parseFloat(val)) ? whenNaN || min : Math.min(Math.max(min, val), max);
 
-require('dotenv').config();
-
 const gists = new Gists();
 
 module.exports = async (req, res, next) => {
@@ -98,7 +96,7 @@ module.exports = async (req, res, next) => {
 			return chromium.font(fontUrl);
 		}));
 
-		console.info('🛠 ', 'Preview Page URL', pageUrl);
+		!production && console.info('🛠 ', 'Preview Page URL', pageUrl);
 		const browser = await chromium.puppeteer.launch({
       args: chromium.args,
 			defaultViewport: {

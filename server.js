@@ -3,6 +3,8 @@ const express = require('express'),
 	path = require('path'),
 	config = JSON.parse(require('fs').readFileSync(`${__dirname}/config.json`));
 
+require('dotenv').config();
+
 app.use(require('cors')({ origin: '*' }));
 app.use(express.static(path.join(__dirname, '/public')));
 
