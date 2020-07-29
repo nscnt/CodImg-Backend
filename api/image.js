@@ -15,7 +15,7 @@ const gists = new Gists();
 
 module.exports = async (req, res, next) => {
 	try {
-		const hostname = production ? 'https://codimg.xyz' : 'http://localhost:3000';
+		const hostname = `http://localhost:${process.env.PORT}`;
 		const startTime = performance.now();
 		const settings = { ...req.query };
 
