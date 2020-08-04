@@ -53,10 +53,3 @@ The API supports the following 4 operations
 - Response Content Type: `application/json`
 
 **Description:** Get a list of all supported languages.
-
-### List Fonts
-- HTTP Method: `GET`
-- Endpoint: `/api/fonts`
-- Response Content Type: `application/json`
-
- **Description:** Get a list of all supported fonts.
